@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import User from "../models";
+import { User } from "../models";
 import { userServices, jwtServices, upload } from "../services";
 import { catchAsync, validSchemas, HttpError } from "../utils";
+
+interface CustomRequest extends Request {
+  user?: any; // Adjust the type of 'user' as per your User model
+}
 
 const checkRegistrationData = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +13,7 @@ const checkRegistrationData = catchAsync(
 
     if (error) throw new HttpError(400, error.message);
 
-    await userServices.checkUserEmailExists({ email: value.email });
+    await userServices.checkUserEmailExists(value.email);
 
     req.body = value;
 
@@ -30,12 +34,12 @@ const checkLoginData = catchAsync(
 );
 
 const protect = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: CustomRequest, res: Response, next: NextFunction) => {
     const token =
       req.headers.authorization?.startsWith("Bearer ") &&
       req.headers.authorization.split(" ")[1];
 
-    const userId = jwtServices.checkToken(token);
+    const userId = token && jwtServices.checkToken(token);
 
     if (!userId) throw new HttpError(401, "Not authorized");
 
