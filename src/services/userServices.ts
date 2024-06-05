@@ -1,15 +1,31 @@
 import serverConfig from "../configs";
-import User from "../models";
+import { User } from "../models";
 import { HttpError } from "../utils";
 import jwt from "jsonwebtoken";
 
+interface NewContact {
+  _id: string;
+  email: string;
+  password?: string | undefined;
+  subscription: string;
+}
+
+interface IUser {
+  contactData: NewContact;
+}
+
+interface LoginParams {
+  email: string;
+  password: string;
+}
+
 const checkUserEmailExists = async (email: string) => {
-  const emailExists = await User.exists(email);
+  const emailExists = await User.exists({ email });
 
   if (emailExists) throw new HttpError(409, "Email in use");
 };
 
-const registration = async (data) => {
+const registration = async (data: IUser) => {
   const newUserData = {
     ...data,
     subscription: "starter",
@@ -17,14 +33,14 @@ const registration = async (data) => {
 
   const newUser = await User.create(newUserData);
 
-  newUser.password = undefined;
+  newUser.password = "";
 
   return {
     user: newUser,
   };
 };
 
-const login = async ({ email, password }) => {
+const login = async ({ email, password }: LoginParams) => {
   const user = await User.findOne({ email }).select("+password");
 
   if (!user) throw new HttpError(401, "Email or password is wrong");
@@ -33,7 +49,7 @@ const login = async ({ email, password }) => {
 
   if (!passwdIsValid) throw new HttpError(401, "Email or password is wrong");
 
-  user.password = undefined;
+  user.password = "";
 
   const token = jwt.sign({ id: user.id }, serverConfig.jwtSecret, {
     expiresIn: serverConfig.jwtExpires,
