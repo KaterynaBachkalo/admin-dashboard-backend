@@ -10,7 +10,12 @@ interface CustomRequest extends Request {
   user: { _id: string; email: string; subscription: string };
 }
 
-const registration = catchAsync(async (req: Request, res: Response) => {
+interface MyCustomRequest extends Request {
+  user?: any;
+  value?: any;
+}
+
+const registration = catchAsync(async (req: MyCustomRequest, res: Response) => {
   const { user } = await userServices.registration(req.body);
 
   res.status(201).json({

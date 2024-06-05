@@ -1,10 +1,11 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import { User } from "../models";
 import { userServices, jwtServices, upload } from "../services";
 import { catchAsync, validSchemas, HttpError } from "../utils";
 
 interface CustomRequest extends Request {
-  user?: any; // Adjust the type of 'user' as per your User model
+  user?: any;
+  value?: any;
 }
 
 const checkRegistrationData = catchAsync(
