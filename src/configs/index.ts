@@ -1,3 +1,3 @@
-import { serverConfig } from "./serverConfig";
+import serverConfig from "./serverConfig";
 
-export default { serverConfig };
+export default serverConfig;
