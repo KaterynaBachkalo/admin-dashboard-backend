@@ -1,4 +1,4 @@
-const app = require("./app");
+import app from "./app";
 
 import serverConfig from "./configs";
 import mongoose from "mongoose";
@@ -13,6 +13,6 @@ mongoose
     process.exit(1);
   });
 
-module.exports = app.listen(3000, () => {
+export default app.listen(3000, () => {
   console.log("Server running. Use our API on port: 3000");
 });

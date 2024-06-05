@@ -8,7 +8,7 @@ interface MyCustomRequest extends Request {
   value?: any;
 }
 
-const checkRegistrationData: RequestHandler = catchAsync(
+const checkRegistrationData = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { value, error } = validSchemas.addUserSchema.validate(req.body);
 
@@ -22,7 +22,7 @@ const checkRegistrationData: RequestHandler = catchAsync(
   }
 );
 
-const checkLoginData: RequestHandler = catchAsync(
+const checkLoginData = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { value, error } = validSchemas.addUserSchema.validate(req.body);
 
@@ -34,7 +34,7 @@ const checkLoginData: RequestHandler = catchAsync(
   }
 );
 
-const protect: RequestHandler = catchAsync(
+const protect = catchAsync(
   async (req: MyCustomRequest, res: Response, next: NextFunction) => {
     const token =
       req.headers.authorization?.startsWith("Bearer ") &&
@@ -55,7 +55,7 @@ const protect: RequestHandler = catchAsync(
   }
 );
 
-const checkSubscriptionExist: RequestHandler = catchAsync(
+const checkSubscriptionExist = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { value, error } = validSchemas.updateSubSchema.validate(req.body);
 

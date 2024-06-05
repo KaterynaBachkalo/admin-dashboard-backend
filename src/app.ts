@@ -1,5 +1,4 @@
 import { contactsRouter, authRouter } from "./routes/api";
-
 import { NextFunction, Request, Response } from "express";
 import express from "express";
 import logger from "morgan";

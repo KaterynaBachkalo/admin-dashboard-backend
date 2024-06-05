@@ -1,7 +1,7 @@
-const request = require("supertest");
-const { expect, describe, it, afterAll } = require("@jest/globals");
-const mongoose = require("mongoose");
-const app = require("../../server");
+import request from "supertest";
+import { expect, describe, it, afterAll } from "@jest/globals";
+import mongoose from "mongoose";
+import app from "../../server";
 
 const testData = {
   email: "Kate@mail.com",

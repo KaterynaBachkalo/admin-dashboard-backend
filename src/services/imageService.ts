@@ -12,7 +12,7 @@ const multerStorage = multer.diskStorage({
   },
 });
 
-const multerFilter = (req: Request, file, cb) => {
+const multerFilter = (req: Request, file: any, cb: any) => {
   if (file.mimetype.startsWith("image/")) {
     cb(null, true);
   } else {
