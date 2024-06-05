@@ -1,8 +1,20 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, Document } from "mongoose";
 import { genSalt, hash, compare } from "bcrypt";
 import crypto from "crypto";
 
-const userSchema = new Schema(
+interface IUser extends Document {
+  password: string;
+  email: string;
+  subscription: string;
+  avatarURL?: string;
+  token?: string;
+  checkPassword(
+    candidatePassword: string,
+    userPassword: string
+  ): Promise<boolean>;
+}
+
+const userSchema = new Schema<IUser>(
   {
     password: {
       type: String,
@@ -47,4 +59,4 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.checkPassword = (candidate: string, passwdHash: string) =>
   compare(candidate, passwdHash);
 
-export const User = model("User", userSchema);
+export const User = model<IUser>("User", userSchema);
