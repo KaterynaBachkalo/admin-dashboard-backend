@@ -6,7 +6,7 @@ const checkToken = (token: string) => {
   if (!token) throw new HttpError(401, "Not authorized");
 
   try {
-    const { id } = jwt.verify(token, serverConfig.jwtSecret);
+    const { id } = jwt.verify(token, serverConfig.jwtSecret) as { id: string };
 
     return id;
   } catch (err) {
@@ -14,4 +14,4 @@ const checkToken = (token: string) => {
   }
 };
 
-export default checkToken;
+export default { checkToken };
