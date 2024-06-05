@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 
 import { catchAsync, HttpError, validSchemas } from "../utils";
 import { Contact } from "../models";
@@ -9,100 +9,112 @@ interface CustomRequest extends Request {
   user: { _id: string };
 }
 
-const getById = catchAsync(async (req: Request, res: Response) => {
-  const { contactId } = req.params;
+const getById: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { contactId } = req.params;
 
-  const result = await Contact.findById(contactId);
+    const result = await Contact.findById(contactId);
 
-  if (!result) {
-    throw new HttpError(404, "Not found");
+    if (!result) {
+      throw new HttpError(404, "Not found");
+    }
+
+    const contactById = await contactServices.checkOwner(result, req);
+
+    res.status(200).json(contactById);
   }
+);
 
-  const contactById = await contactServices.checkOwner(result, req);
+const addContact: RequestHandler = catchAsync(
+  async (req: CustomRequest, res: Response) => {
+    const { _id } = req.user;
 
-  res.status(200).json(contactById);
-});
+    const userId = new Schema.Types.ObjectId(_id); // Конвертація _id в ObjectId
+    const newContact = await contactServices.createContact(req.body, userId);
 
-const addContact = catchAsync(async (req: CustomRequest, res: Response) => {
-  const { _id } = req.user;
-
-  const userId = new Schema.Types.ObjectId(_id); // Конвертація _id в ObjectId
-  const newContact = await contactServices.createContact(req.body, userId);
-
-  res.status(201).json(newContact);
-});
-
-const removeContact = catchAsync(async (req: Request, res: Response) => {
-  const { contactId } = req.params;
-
-  const result = await Contact.findByIdAndDelete(contactId);
-
-  if (!result) {
-    throw new HttpError(404, "Not found");
+    res.status(201).json(newContact);
   }
+);
 
-  await contactServices.checkOwner(result, req);
+const removeContact: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { contactId } = req.params;
 
-  res.status(200).json({ message: "contact deleted" });
-});
+    const result = await Contact.findByIdAndDelete(contactId);
 
-const updateContact = catchAsync(async (req: Request, res: Response) => {
-  const { contactId } = req.params;
-  const { name, email, phone } = req.body;
+    if (!result) {
+      throw new HttpError(404, "Not found");
+    }
 
-  const result = await Contact.findByIdAndUpdate(
-    contactId,
-    { name, email, phone },
-    { new: true }
-  );
+    await contactServices.checkOwner(result, req);
 
-  if (!result) {
-    throw new HttpError(404, "Not found");
+    res.status(200).json({ message: "contact deleted" });
   }
+);
 
-  const updateContact = await contactServices.checkOwner(result, req);
+const updateContact: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { contactId } = req.params;
+    const { name, email, phone } = req.body;
 
-  res.status(200).json(updateContact);
-});
+    const result = await Contact.findByIdAndUpdate(
+      contactId,
+      { name, email, phone },
+      { new: true }
+    );
 
-const updateStatusContact = catchAsync(async (req: Request, res: Response) => {
-  const { contactId } = req.params;
-  const { favorite } = req.body;
+    if (!result) {
+      throw new HttpError(404, "Not found");
+    }
 
-  const result = await Contact.findByIdAndUpdate(
-    contactId,
-    { favorite },
-    { new: true }
-  );
+    const updateContact = await contactServices.checkOwner(result, req);
 
-  if (!result) {
-    throw new HttpError(404, "Not found");
+    res.status(200).json(updateContact);
   }
+);
 
-  const updateStatus = await contactServices.checkOwner(result, req);
+const updateStatusContact: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { contactId } = req.params;
+    const { favorite } = req.body;
 
-  res.status(200).json(updateStatus);
-});
+    const result = await Contact.findByIdAndUpdate(
+      contactId,
+      { favorite },
+      { new: true }
+    );
 
-const getContacts = catchAsync(async (req: CustomRequest, res: Response) => {
-  const { error } = validSchemas.contactListSchema.validate(req.query);
+    if (!result) {
+      throw new HttpError(404, "Not found");
+    }
 
-  if (error) {
-    throw new HttpError(400, error.message);
+    const updateStatus = await contactServices.checkOwner(result, req);
+
+    res.status(200).json(updateStatus);
   }
+);
 
-  const ownerId = new Schema.Types.ObjectId(req.user._id);
+const getContacts: RequestHandler = catchAsync(
+  async (req: CustomRequest, res: Response) => {
+    const { error } = validSchemas.contactListSchema.validate(req.query);
 
-  const { contacts, total } = await contactServices.getContacts(
-    req.query,
-    ownerId
-  );
+    if (error) {
+      throw new HttpError(400, error.message);
+    }
 
-  res.status(200).json({
-    contacts,
-    total,
-  });
-});
+    const ownerId = new Schema.Types.ObjectId(req.user._id);
+
+    const { contacts, total } = await contactServices.getContacts(
+      req.query,
+      ownerId
+    );
+
+    res.status(200).json({
+      contacts,
+      total,
+    });
+  }
+);
 
 export default {
   getById,

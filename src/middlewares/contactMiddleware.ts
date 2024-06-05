@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { Contact } from "../models";
 import { catchAsync, HttpError, validSchemas } from "../utils";
-import { NextFunction } from "express";
+import { NextFunction, Response, Request } from "express";
 
 interface CustomRequest extends Request {
   user: { _id: string; email: string; subscription: string };

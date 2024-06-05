@@ -4,18 +4,13 @@ import { User } from "../models";
 import { userServices } from "../services";
 import { catchAsync, HttpError } from "../utils";
 import Jimp from "jimp";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 interface CustomRequest extends Request {
   user: { _id: string; email: string; subscription: string };
 }
 
-interface MyCustomRequest extends Request {
-  user?: any;
-  value?: any;
-}
-
-const registration = catchAsync(async (req: MyCustomRequest, res: Response) => {
+const registration = catchAsync(async (req: CustomRequest, res: Response) => {
   const { user } = await userServices.registration(req.body);
 
   res.status(201).json({

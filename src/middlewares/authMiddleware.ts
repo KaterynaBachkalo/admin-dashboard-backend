@@ -3,12 +3,12 @@ import { User } from "../models";
 import { userServices, jwtServices, upload } from "../services";
 import { catchAsync, validSchemas, HttpError } from "../utils";
 
-interface CustomRequest extends Request {
+interface MyCustomRequest extends Request {
   user?: any;
   value?: any;
 }
 
-const checkRegistrationData = catchAsync(
+const checkRegistrationData: RequestHandler = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { value, error } = validSchemas.addUserSchema.validate(req.body);
 
@@ -22,7 +22,7 @@ const checkRegistrationData = catchAsync(
   }
 );
 
-const checkLoginData = catchAsync(
+const checkLoginData: RequestHandler = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { value, error } = validSchemas.addUserSchema.validate(req.body);
 
@@ -34,8 +34,8 @@ const checkLoginData = catchAsync(
   }
 );
 
-const protect = catchAsync(
-  async (req: CustomRequest, res: Response, next: NextFunction) => {
+const protect: RequestHandler = catchAsync(
+  async (req: MyCustomRequest, res: Response, next: NextFunction) => {
     const token =
       req.headers.authorization?.startsWith("Bearer ") &&
       req.headers.authorization.split(" ")[1];
@@ -55,7 +55,7 @@ const protect = catchAsync(
   }
 );
 
-const checkSubscriptionExist = catchAsync(
+const checkSubscriptionExist: RequestHandler = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { value, error } = validSchemas.updateSubSchema.validate(req.body);
 
