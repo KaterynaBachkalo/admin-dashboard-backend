@@ -1,8 +1,13 @@
 import { Request, Response } from "express";
 
 import { catchAsync, HttpError, validSchemas } from "../utils";
-import Contact from "../models";
+import { Contact } from "../models";
 import { contactServices } from "../services";
+import { Schema } from "mongoose";
+
+interface CustomRequest extends Request {
+  user: { _id: string };
+}
 
 const getById = catchAsync(async (req: Request, res: Response) => {
   const { contactId } = req.params;
@@ -18,9 +23,11 @@ const getById = catchAsync(async (req: Request, res: Response) => {
   res.status(200).json(contactById);
 });
 
-const addContact = catchAsync(async (req: Request, res: Response) => {
+const addContact = catchAsync(async (req: CustomRequest, res: Response) => {
   const { _id } = req.user;
-  const newContact = await contactServices.createContact(req.body, _id);
+
+  const userId = new Schema.Types.ObjectId(_id); // Конвертація _id в ObjectId
+  const newContact = await contactServices.createContact(req.body, userId);
 
   res.status(201).json(newContact);
 });
@@ -77,16 +84,18 @@ const updateStatusContact = catchAsync(async (req: Request, res: Response) => {
   res.status(200).json(updateStatus);
 });
 
-const getContacts = catchAsync(async (req: Request, res: Response) => {
+const getContacts = catchAsync(async (req: CustomRequest, res: Response) => {
   const { error } = validSchemas.contactListSchema.validate(req.query);
 
   if (error) {
     throw new HttpError(400, error.message);
   }
 
+  const ownerId = new Schema.Types.ObjectId(req.user._id);
+
   const { contacts, total } = await contactServices.getContacts(
     req.query,
-    req.user
+    ownerId
   );
 
   res.status(200).json({
