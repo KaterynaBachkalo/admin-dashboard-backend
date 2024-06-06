@@ -12,6 +12,7 @@
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.0",
     "@types/joi": "^17.2.3",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/mongoose": "^5.11.97",
