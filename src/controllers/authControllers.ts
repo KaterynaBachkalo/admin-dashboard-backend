@@ -4,10 +4,11 @@ import { User } from "../models";
 import { userServices } from "../services";
 import { catchAsync, HttpError } from "../utils";
 import Jimp from "jimp";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
+import { ObjectId } from "mongodb";
 
 interface CustomRequest extends Request {
-  user: { _id: string; email: string; subscription: string };
+  user: { _id: ObjectId; email: string; subscription: string };
 }
 
 const registration = catchAsync(async (req: CustomRequest, res: Response) => {
@@ -19,13 +20,14 @@ const registration = catchAsync(async (req: CustomRequest, res: Response) => {
 });
 
 const login = catchAsync(async (req: Request, res: Response) => {
-  const { user, token } = await userServices.login(req.body);
+  const { user, accessToken } = await userServices.login(req.body);
 
-  res.status(200).json({ user, token });
+  res.status(200).json({ user, accessToken });
 });
 
 const logout = catchAsync(async (req: CustomRequest, res: Response) => {
   const { _id } = req.user;
+  // console.log(_id);
 
   await User.findByIdAndUpdate(_id, { token: "" });
 
@@ -56,40 +58,10 @@ const updateSubscription = catchAsync(
   }
 );
 
-const avatarDir = path.join(__dirname, "../", "public", "avatars");
-
-const updateAvatar = catchAsync(async (req: CustomRequest, res: Response) => {
-  const { _id } = req.user;
-
-  if (!req.file) {
-    throw new HttpError(400, "Please, upload the image");
-  }
-
-  const { path: tempUpload, originalname } = req.file;
-
-  const filename = `${_id}_${originalname}`;
-  const resultUpload = path.join(avatarDir, filename);
-
-  const avatar = await Jimp.read(tempUpload);
-  avatar
-    .cover(250, 250, Jimp.HORIZONTAL_ALIGN_CENTER | Jimp.VERTICAL_ALIGN_MIDDLE)
-    .writeAsync(tempUpload);
-
-  await fs.rename(tempUpload, resultUpload);
-  const avatarURL = path.join("avatars", filename);
-
-  await User.findByIdAndUpdate(_id, { avatarURL });
-
-  res.status(200).json({
-    avatarURL,
-  });
-});
-
 export default {
   registration,
   login,
   logout,
   getCurrentUser,
   updateSubscription,
-  updateAvatar,
 };

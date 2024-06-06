@@ -7,6 +7,7 @@ const checkToken = (token: string) => {
 
   try {
     const { id } = jwt.verify(token, serverConfig.jwtSecret) as { id: string };
+    console.log(id);
 
     return id;
   } catch (err) {

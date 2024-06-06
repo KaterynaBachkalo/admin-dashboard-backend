@@ -1,11 +1,20 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { User } from "../models";
-import { userServices, jwtServices, upload } from "../services";
+import { userServices, jwtServices } from "../services";
 import { catchAsync, validSchemas, HttpError } from "../utils";
+import { ObjectId } from "mongodb";
+
+// interface CurrentUser {
+//   _id: ObjectId;
+//   password: string;
+//   email: string;
+//   subscription: string;
+//   avatarURL: string;
+//   token: string;
+// }
 
 interface MyCustomRequest extends Request {
   user?: any;
-  value?: any;
 }
 
 const checkRegistrationData = catchAsync(
@@ -39,7 +48,7 @@ const protect = catchAsync(
     const token =
       req.headers.authorization?.startsWith("Bearer ") &&
       req.headers.authorization.split(" ")[1];
-
+    console.log(req.headers);
     const userId = token && jwtServices.checkToken(token);
 
     if (!userId) throw new HttpError(401, "Not authorized");
@@ -67,12 +76,9 @@ const checkSubscriptionExist = catchAsync(
   }
 );
 
-const uploadAvatar = upload.single("avatar");
-
 export default {
   checkRegistrationData,
   checkLoginData,
   protect,
   checkSubscriptionExist,
-  uploadAvatar,
 };

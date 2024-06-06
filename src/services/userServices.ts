@@ -3,15 +3,11 @@ import { User } from "../models";
 import { HttpError } from "../utils";
 import jwt from "jsonwebtoken";
 
-interface NewContact {
-  _id: string;
-  email: string;
-  password?: string | undefined;
-  subscription: string;
-}
-
-interface IUser {
-  contactData: NewContact;
+interface registrationData {
+  userData: {
+    email: string;
+    password: string | undefined;
+  };
 }
 
 interface LoginParams {
@@ -25,7 +21,7 @@ const checkUserEmailExists = async (email: string) => {
   if (emailExists) throw new HttpError(409, "Email in use");
 };
 
-const registration = async (data: IUser) => {
+const registration = async (data: registrationData) => {
   const newUserData = {
     ...data,
     subscription: "starter",
@@ -51,15 +47,16 @@ const login = async ({ email, password }: LoginParams) => {
 
   user.password = "";
 
-  const token = jwt.sign({ id: user.id }, serverConfig.jwtSecret, {
-    expiresIn: serverConfig.jwtExpires,
+  const accessToken = jwt.sign({ id: user.id }, serverConfig.jwtSecret, {
+    expiresIn:
+      process.env.NODE_ENV === "production" ? "120m" : serverConfig.jwtExpires,
   });
 
-  await User.findByIdAndUpdate(user.id, { token });
+  await User.findByIdAndUpdate(user.id, { accessToken });
 
   return {
     user: { email: user.email, subscription: user.subscription },
-    token,
+    accessToken,
   };
 };
 
