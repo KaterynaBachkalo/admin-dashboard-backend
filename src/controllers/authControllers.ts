@@ -29,7 +29,7 @@ const logout = catchAsync(async (req: CustomRequest, res: Response) => {
 
   await User.findByIdAndUpdate(_id, { token: "" });
 
-  res.status(204).json();
+  res.status(204).json({ message: "You successfully logged out" });
 });
 
 const getCurrentUser = catchAsync(async (req: CustomRequest, res: Response) => {
