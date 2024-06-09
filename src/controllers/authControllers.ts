@@ -20,9 +20,11 @@ const registration = catchAsync(async (req: CustomRequest, res: Response) => {
 });
 
 const login = catchAsync(async (req: Request, res: Response) => {
-  const { user, accessToken } = await userServices.login(req.body);
+  const { user, accessToken, refreshToken } = await userServices.login(
+    req.body
+  );
 
-  res.status(200).json({ user, accessToken });
+  res.status(200).json({ user, accessToken, refreshToken });
 });
 
 const logout = catchAsync(async (req: CustomRequest, res: Response) => {
@@ -60,9 +62,11 @@ const updateSubscription = catchAsync(
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
   try {
     const { token } = req.body;
+
     const result = await jwtServices.refreshToken(token);
     res.json(result);
   } catch (error: any) {
+    console.log(error);
     res.status(error.status || 500).json({ message: error.message });
   }
 });
