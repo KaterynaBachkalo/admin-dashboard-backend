@@ -64,21 +64,8 @@ const protect = catchAsync(
   }
 );
 
-const checkSubscriptionExist = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { value, error } = validSchemas.updateSubSchema.validate(req.body);
-
-    if (error) throw new HttpError(400, "Subscription name is not exist");
-
-    req.body = value;
-
-    next();
-  }
-);
-
 export default {
   checkRegistrationData,
   checkLoginData,
   protect,
-  checkSubscriptionExist,
 };

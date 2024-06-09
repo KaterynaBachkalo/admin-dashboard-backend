@@ -1,21 +1,18 @@
-import fs from "fs/promises";
-import path from "path";
 import { User } from "../models";
 import { jwtServices, userServices } from "../services";
-import { catchAsync, HttpError } from "../utils";
-import Jimp from "jimp";
+import { catchAsync } from "../utils";
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 
 interface CustomRequest extends Request {
-  user: { _id: ObjectId; email: string; subscription: string };
+  user: { _id: ObjectId; email: string };
 }
 
 const registration = catchAsync(async (req: CustomRequest, res: Response) => {
   const { user } = await userServices.registration(req.body);
 
   res.status(201).json({
-    user: { email: user.email, subscription: user.subscription },
+    user: { email: user.email },
   });
 });
 
@@ -36,28 +33,10 @@ const logout = catchAsync(async (req: CustomRequest, res: Response) => {
 });
 
 const getCurrentUser = catchAsync(async (req: CustomRequest, res: Response) => {
-  const { email, subscription } = req.user;
+  const { email } = req.user;
 
-  res.status(200).json({ email, subscription });
+  res.status(200).json({ email });
 });
-
-const updateSubscription = catchAsync(
-  async (req: CustomRequest, res: Response) => {
-    const { _id } = req.user;
-
-    const { subscription } = req.body;
-
-    const user = await User.findByIdAndUpdate(
-      _id,
-      { subscription },
-      { new: true }
-    );
-
-    res.status(200).json({
-      user: { email: user?.email, subscription: user?.subscription },
-    });
-  }
-);
 
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
   try {
@@ -76,6 +55,5 @@ export default {
   login,
   logout,
   getCurrentUser,
-  updateSubscription,
   refreshToken,
 };

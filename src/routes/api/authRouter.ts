@@ -20,10 +20,4 @@ router.post("/logout", authControllers.logout);
 
 router.get("/user-info", authControllers.getCurrentUser);
 
-router.patch(
-  "/",
-  authMiddleware.checkSubscriptionExist,
-  authControllers.updateSubscription
-);
-
 export default router;
