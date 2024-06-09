@@ -1,4 +1,4 @@
-import { contactsRouter, authRouter } from "./routes/api";
+import { dashboardRouter, authRouter } from "./routes/api";
 import { NextFunction, Request, Response } from "express";
 import express from "express";
 import logger from "morgan";
@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
-app.use("/api/contacts", contactsRouter);
+app.use("/api", dashboardRouter);
 app.use("/api/user", authRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

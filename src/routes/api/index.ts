@@ -1,4 +1,4 @@
-import contactsRouter from "./contactsRouter";
+import dashboardRouter from "./dashboardRouter";
 import authRouter from "./authRouter";
 
-export { contactsRouter, authRouter };
+export { dashboardRouter, authRouter };

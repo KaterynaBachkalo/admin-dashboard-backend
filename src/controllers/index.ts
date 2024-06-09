@@ -1,4 +1,4 @@
-import contactsControllers from "./contactsControllers";
+import dashboardControllers from "./dashboardControllers";
 import authControllers from "./authControllers";
 
-export { contactsControllers, authControllers };
+export { dashboardControllers, authControllers };
