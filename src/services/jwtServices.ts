@@ -1,13 +1,13 @@
 import jwt from "jsonwebtoken";
 import serverConfig from "../configs";
 import { HttpError } from "../utils";
+import { User } from "../models";
 
 const checkToken = (token: string) => {
   if (!token) throw new HttpError(401, "Not authorized");
 
   try {
     const { id } = jwt.verify(token, serverConfig.jwtSecret) as { id: string };
-    console.log(id);
 
     return id;
   } catch (err) {
@@ -15,4 +15,32 @@ const checkToken = (token: string) => {
   }
 };
 
-export default { checkToken };
+const refreshToken = async (token: string) => {
+  try {
+    const { id } = jwt.verify(token, serverConfig.jwtSecret) as { id: string };
+
+    const user = await User.findById(id);
+
+    if (!user || user.refreshToken !== token) {
+      throw new HttpError(401, "Invalid refresh token");
+    }
+
+    const newAccessToken = jwt.sign({ id: user.id }, serverConfig.jwtSecret, {
+      expiresIn:
+        process.env.NODE_ENV === "production"
+          ? "120m"
+          : serverConfig.jwtExpires,
+    });
+
+    user.accessToken = newAccessToken;
+    await user.save();
+
+    return {
+      accessToken: newAccessToken,
+    };
+  } catch (error) {
+    throw new HttpError(401, "Invalid refresh token");
+  }
+};
+
+export default { checkToken, refreshToken };

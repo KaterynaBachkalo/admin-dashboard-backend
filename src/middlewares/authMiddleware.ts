@@ -45,17 +45,17 @@ const checkLoginData = catchAsync(
 
 const protect = catchAsync(
   async (req: MyCustomRequest, res: Response, next: NextFunction) => {
-    const token =
+    const accessToken =
       req.headers.authorization?.startsWith("Bearer ") &&
       req.headers.authorization.split(" ")[1];
-    console.log(req.headers);
-    const userId = token && jwtServices.checkToken(token);
+
+    const userId = accessToken && jwtServices.checkToken(accessToken);
 
     if (!userId) throw new HttpError(401, "Not authorized");
 
     const currentUser = await User.findById(userId);
 
-    if (!currentUser || !currentUser.token)
+    if (!currentUser || !currentUser.accessToken)
       throw new HttpError(401, "Not authorized");
 
     req.user = currentUser;

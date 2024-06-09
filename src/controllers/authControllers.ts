@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { User } from "../models";
-import { userServices } from "../services";
+import { jwtServices, userServices } from "../services";
 import { catchAsync, HttpError } from "../utils";
 import Jimp from "jimp";
 import { Request, Response } from "express";
@@ -27,7 +27,6 @@ const login = catchAsync(async (req: Request, res: Response) => {
 
 const logout = catchAsync(async (req: CustomRequest, res: Response) => {
   const { _id } = req.user;
-  // console.log(_id);
 
   await User.findByIdAndUpdate(_id, { token: "" });
 
@@ -58,10 +57,21 @@ const updateSubscription = catchAsync(
   }
 );
 
+const refreshToken = catchAsync(async (req: Request, res: Response) => {
+  try {
+    const { token } = req.body;
+    const result = await jwtServices.refreshToken(token);
+    res.json(result);
+  } catch (error: any) {
+    res.status(error.status || 500).json({ message: error.message });
+  }
+});
+
 export default {
   registration,
   login,
   logout,
   getCurrentUser,
   updateSubscription,
+  refreshToken,
 };

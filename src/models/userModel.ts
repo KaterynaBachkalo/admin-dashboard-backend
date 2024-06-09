@@ -7,7 +7,8 @@ interface IUser extends Document {
   email: string;
   subscription: string;
   avatarURL?: string;
-  token?: string;
+  accessToken?: string;
+  refreshToken?: string;
   checkPassword(
     candidatePassword: string,
     userPassword: string
@@ -34,7 +35,8 @@ const userSchema = new Schema<IUser>(
       type: String,
     },
 
-    token: String,
+    accessToken: String,
+    refreshToken: String,
   },
   {
     versionKey: false,

@@ -52,11 +52,16 @@ const login = async ({ email, password }: LoginParams) => {
       process.env.NODE_ENV === "production" ? "120m" : serverConfig.jwtExpires,
   });
 
-  await User.findByIdAndUpdate(user.id, { accessToken });
+  const refreshToken = jwt.sign({ id: user.id }, serverConfig.jwtSecret, {
+    expiresIn: process.env.NODE_ENV === "production" ? "7d" : "1d",
+  });
+
+  await User.findByIdAndUpdate(user.id, { accessToken, refreshToken });
 
   return {
-    user: { email: user.email, subscription: user.subscription },
+    user: { email: user.email },
     accessToken,
+    refreshToken,
   };
 };
 
