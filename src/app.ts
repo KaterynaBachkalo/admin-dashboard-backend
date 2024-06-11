@@ -16,8 +16,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
-app.use("/api", dashboardRouter);
 app.use("/api/user", authRouter);
+app.use("/api/admin", dashboardRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   const { status = 500, message = "Server error" } = err;
