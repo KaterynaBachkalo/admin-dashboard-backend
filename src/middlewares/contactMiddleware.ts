@@ -69,22 +69,8 @@ const checkUpdateContact = catchAsync(
   }
 );
 
-const checkStatusContact = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { error } = validSchemas.updateStatusSchema.validate(req.body);
-
-    if (req.body && Object.keys(req.body).length === 0)
-      throw new HttpError(400, "missing field favorite");
-
-    if (error) throw new HttpError(400, error.message);
-
-    next();
-  }
-);
-
 export default {
   checkAddContact,
   checkContactId,
   checkUpdateContact,
-  checkStatusContact,
 };

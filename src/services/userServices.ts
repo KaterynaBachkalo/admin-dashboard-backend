@@ -24,7 +24,6 @@ const checkUserEmailExists = async (email: string) => {
 const registration = async (data: registrationData) => {
   const newUserData = {
     ...data,
-    subscription: "starter",
   };
 
   const newUser = await User.create(newUserData);

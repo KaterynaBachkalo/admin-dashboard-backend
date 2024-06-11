@@ -4,15 +4,6 @@ import { userServices, jwtServices } from "../services";
 import { catchAsync, validSchemas, HttpError } from "../utils";
 import { ObjectId } from "mongodb";
 
-// interface CurrentUser {
-//   _id: ObjectId;
-//   password: string;
-//   email: string;
-//   subscription: string;
-//   avatarURL: string;
-//   token: string;
-// }
-
 interface MyCustomRequest extends Request {
   user?: any;
 }
