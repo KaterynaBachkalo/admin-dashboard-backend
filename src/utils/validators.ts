@@ -1,22 +1,51 @@
 import Joi from "joi";
 
-const addContactSchema = Joi.object({
+const addProductSchema = Joi.object({
   name: Joi.string()
-    .min(3)
-    .max(20)
     .required()
     .messages({ "any.required": "missing required name field" }),
 
-  email: Joi.string()
-    .email()
+  category: Joi.string()
     .required()
-    .messages({ "any.required": "missing required email field" }),
+    .messages({ "any.required": "missing required category field" }),
 
-  phone: Joi.string()
-    .min(3)
-    .max(15)
+  suppliers: Joi.string()
     .required()
-    .messages({ "any.required": "missing required phone field" }),
+    .messages({ "any.required": "missing required suppliers field" }),
+
+  stock: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required stock field" }),
+
+  price: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required price field" }),
+});
+
+const addSupplierSchema = Joi.object({
+  name: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required name field" }),
+
+  address: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required address field" }),
+
+  suppliers: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required suppliers field" }),
+
+  date: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required date field" }),
+
+  amount: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required amount field" }),
+
+  status: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required status field" }),
 });
 
 const addUserSchema = Joi.object({
@@ -30,16 +59,44 @@ const addUserSchema = Joi.object({
     .messages({ "any.required": "Email is required" }),
 });
 
-const contactListSchema = Joi.object({
+const orderSchema = Joi.object({
   limit: Joi.number(),
 
   page: Joi.number(),
 
-  favorite: Joi.boolean(),
+  name: Joi.string(),
+});
+
+const productSchema = Joi.object({
+  limit: Joi.number(),
+
+  page: Joi.number(),
+
+  name: Joi.string(),
+});
+
+const supplierSchema = Joi.object({
+  limit: Joi.number(),
+
+  page: Joi.number(),
+
+  name: Joi.string(),
+});
+
+const customerSchema = Joi.object({
+  limit: Joi.number(),
+
+  page: Joi.number(),
+
+  name: Joi.string(),
 });
 
 export default {
-  contactListSchema,
+  orderSchema,
   addUserSchema,
-  addContactSchema,
+  addProductSchema,
+  addSupplierSchema,
+  productSchema,
+  supplierSchema,
+  customerSchema,
 };
