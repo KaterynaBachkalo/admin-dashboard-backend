@@ -1,4 +1,4 @@
-import dashboardRouter from "./dashboardRouter";
+import adminRouter from "./adminRouter";
 import authRouter from "./authRouter";
 
-export { dashboardRouter, authRouter };
+export { adminRouter, authRouter };

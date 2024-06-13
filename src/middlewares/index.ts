@@ -1,4 +1,4 @@
-import contactMiddleware from "./contactMiddleware";
+import updateMiddleware from "./updateMiddleware";
 import authMiddleware from "./authMiddleware";
 
-export { contactMiddleware, authMiddleware };
+export { updateMiddleware, authMiddleware };
