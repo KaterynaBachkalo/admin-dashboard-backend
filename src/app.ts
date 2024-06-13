@@ -1,4 +1,4 @@
-import { dashboardRouter, authRouter } from "./routes/api";
+import { adminRouter, authRouter } from "./routes/api";
 import { NextFunction, Request, Response } from "express";
 import express from "express";
 import logger from "morgan";
@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/api/user", authRouter);
-app.use("/api/admin", dashboardRouter);
+app.use("/api/admin", adminRouter);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   const { status = 500, message = "Server error" } = err;
