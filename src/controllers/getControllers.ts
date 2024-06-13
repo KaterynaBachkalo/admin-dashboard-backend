@@ -89,21 +89,10 @@ const getAllCustomers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getCustomerInfoById = catchAsync(async (req: Request, res: Response) => {
-  // const { contactId } = req.params;
-  // const result = await Contact.findById(contactId);
-  // if (!result) {
-  //   throw new HttpError(404, "Not found");
-  // }
-  // const contactById = await contactServices.checkOwner(result, req);
-  // res.status(200).json(contactById);
-});
-
 export default {
   getData,
   getAllOrders,
   getAllProducts,
   getAllSuppliers,
   getAllCustomers,
-  getCustomerInfoById,
 };
