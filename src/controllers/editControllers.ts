@@ -5,14 +5,12 @@ import { Product, Supplier } from "../models";
 
 const editProduct = catchAsync(async (req: Request, res: Response) => {
   const { productId } = req.params;
-  const { name, category, suppliers, stock, price } = req.body;
+  const { _id, ...updateProduct } = req.body;
 
-  const result = await Product.findByIdAndUpdate(
-    productId,
-    { name, category, suppliers, stock, price },
-    { new: true }
-  );
-
+  const result = await Product.findByIdAndUpdate(productId, updateProduct, {
+    new: true,
+  });
+  // console.log(result);
   if (!result) {
     throw new HttpError(404, "Not found");
   }
