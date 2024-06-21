@@ -45,7 +45,7 @@ const checkProductId = catchAsync(
 
 const checkEditProduct = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { error } = validSchemas.addProductSchema.validate(req.body);
+    const { error } = validSchemas.editProductSchema.validate(req.body);
 
     if (req.body && Object.keys(req.body).length === 0)
       throw new HttpError(400, "missing fields");
@@ -98,7 +98,7 @@ const checkSupplierId = catchAsync(
 
 const checkEditSupplier = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { error } = validSchemas.addSupplierSchema.validate(req.body);
+    const { error } = validSchemas.editSupplierSchema.validate(req.body);
 
     if (req.body && Object.keys(req.body).length === 0)
       throw new HttpError(400, "missing fields");
