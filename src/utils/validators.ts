@@ -22,7 +22,59 @@ const addProductSchema = Joi.object({
     .messages({ "any.required": "missing required price field" }),
 });
 
+const editProductSchema = Joi.object({
+  _id: Joi.string().required(),
+
+  name: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required name field" }),
+
+  category: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required category field" }),
+
+  suppliers: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required suppliers field" }),
+
+  stock: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required stock field" }),
+
+  price: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required price field" }),
+});
+
 const addSupplierSchema = Joi.object({
+  name: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required name field" }),
+
+  address: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required address field" }),
+
+  suppliers: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required suppliers field" }),
+
+  date: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required date field" }),
+
+  amount: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required amount field" }),
+
+  status: Joi.string()
+    .required()
+    .messages({ "any.required": "missing required status field" }),
+});
+
+const editSupplierSchema = Joi.object({
+  _id: Joi.string().required(),
+
   name: Joi.string()
     .required()
     .messages({ "any.required": "missing required name field" }),
@@ -95,7 +147,9 @@ export default {
   orderSchema,
   addUserSchema,
   addProductSchema,
+  editProductSchema,
   addSupplierSchema,
+  editSupplierSchema,
   productSchema,
   supplierSchema,
   customerSchema,
