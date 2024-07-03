@@ -26,7 +26,10 @@ const addProductSchema = Joi.object({
 
 const editProductSchema = Joi.object({
   _id: Joi.string().required(),
+
   id: Joi.string().required(),
+
+  photo: Joi.string(),
 
   name: Joi.string()
     .required()
