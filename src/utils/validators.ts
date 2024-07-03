@@ -1,6 +1,8 @@
 import Joi from "joi";
 
 const addProductSchema = Joi.object({
+  id: Joi.string(),
+
   name: Joi.string()
     .required()
     .messages({ "any.required": "missing required name field" }),
@@ -24,6 +26,7 @@ const addProductSchema = Joi.object({
 
 const editProductSchema = Joi.object({
   _id: Joi.string().required(),
+  id: Joi.string().required(),
 
   name: Joi.string()
     .required()
