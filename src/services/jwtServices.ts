@@ -17,7 +17,9 @@ const checkToken = (token: string) => {
 
 const refreshToken = async (token: string) => {
   try {
-    const { id } = jwt.verify(token, serverConfig.jwtSecret) as { id: string };
+    const { id } = jwt.verify(token, serverConfig.jwtSecret) as {
+      id: string;
+    };
 
     const user = await User.findById(id);
 
@@ -33,10 +35,12 @@ const refreshToken = async (token: string) => {
     });
 
     user.accessToken = newAccessToken;
+
     await user.save();
 
     return {
       accessToken: newAccessToken,
+      refreshToken: user.refreshToken,
     };
   } catch (error) {
     throw new HttpError(401, "Invalid refresh token");
