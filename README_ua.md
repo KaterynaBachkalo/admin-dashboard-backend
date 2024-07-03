@@ -1,4 +1,4 @@
-**Read in English: [Admin dashboard Backend](README.md).**<br />
+**Read in English: [Admin dashboard Backend](readme.md).**<br />
 
 # Додаток "Admin dashboard"
 
