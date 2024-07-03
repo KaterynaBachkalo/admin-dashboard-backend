@@ -41,7 +41,6 @@ const getCurrentUser = catchAsync(async (req: CustomRequest, res: Response) => {
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
   try {
     const { token } = req.body;
-
     const result = await jwtServices.refreshToken(token);
     res.json(result);
   } catch (error: any) {

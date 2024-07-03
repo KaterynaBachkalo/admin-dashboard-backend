@@ -6,6 +6,7 @@ import { Customer } from "../models/customerModel";
 import { Supplier } from "../models/supplierModel";
 import { Incomeexpense } from "../models/incomeExpenses";
 import { Order } from "../models";
+import { getControllers } from "../controllers";
 
 interface QueryParams {
   name?: string;
@@ -152,6 +153,7 @@ const getCustomers = async (query: QueryParams) => {
 };
 
 interface IProduct {
+  // id: string;
   name: string;
   suppliers: string;
   stock: string;
@@ -168,7 +170,7 @@ interface ISupplier {
   status: string;
 }
 
-const createProduct = (productData: IProduct) => {
+const createProduct = async (productData: IProduct) => {
   return Product.create({
     ...productData,
   });

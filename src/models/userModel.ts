@@ -25,8 +25,13 @@ const userSchema = new Schema<IUser>(
       unique: true,
     },
 
-    accessToken: String,
-    refreshToken: String,
+    accessToken: {
+      type: String,
+    },
+
+    refreshToken: {
+      type: String,
+    },
   },
   {
     versionKey: false,
