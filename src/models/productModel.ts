@@ -1,19 +1,11 @@
+import { number } from "joi";
 import { model, Schema, Document } from "mongoose";
-
-interface IProduct extends Document {
-  id: string;
-  photo: string;
-  name: string;
-  suppliers: string;
-  stock: string;
-  price: string;
-  category: string;
-}
+import { IProduct } from "../types";
 
 const productSchema = new Schema<IProduct>(
   {
     id: {
-      type: String,
+      type: Number,
     },
     name: {
       type: String,
