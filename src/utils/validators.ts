@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 const addProductSchema = Joi.object({
-  id: Joi.string(),
+  id: Joi.number(),
 
   name: Joi.string()
     .required()
@@ -27,7 +27,7 @@ const addProductSchema = Joi.object({
 const editProductSchema = Joi.object({
   _id: Joi.string().required(),
 
-  id: Joi.string().required(),
+  id: Joi.number().required(),
 
   photo: Joi.string(),
 
