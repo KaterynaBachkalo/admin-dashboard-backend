@@ -5,7 +5,7 @@ import { Product, Supplier } from "../models";
 
 const editProduct = catchAsync(async (req: Request, res: Response) => {
   const { productId } = req.params;
-  const { _id, ...updateProduct } = req.body;
+  const { ...updateProduct } = req.body;
 
   const result = await Product.findByIdAndUpdate(productId, updateProduct, {
     new: true,
