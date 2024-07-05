@@ -8,4 +8,13 @@ interface IProduct extends Document {
   category: string;
 }
 
-export { IProduct };
+interface ISupplier {
+  name: string;
+  address: string;
+  suppliers: string;
+  date: string;
+  amount: string;
+  status: string;
+}
+
+export { IProduct, ISupplier };
