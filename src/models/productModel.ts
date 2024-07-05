@@ -1,4 +1,3 @@
-import { number } from "joi";
 import { model, Schema, Document } from "mongoose";
 import { IProduct } from "../types";
 

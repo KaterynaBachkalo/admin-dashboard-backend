@@ -1,12 +1,9 @@
-import { Schema } from "mongoose";
-import { HttpError } from "../utils";
-import { Request } from "express";
 import { Product } from "../models/productModel";
 import { Customer } from "../models/customerModel";
 import { Supplier } from "../models/supplierModel";
 import { Incomeexpense } from "../models/incomeExpenses";
 import { Order } from "../models";
-import { getControllers } from "../controllers";
+import { IProduct, ISupplier } from "../types";
 
 interface QueryParams {
   name?: string;
@@ -26,7 +23,7 @@ const pagination = (dbQuery: any, query: QueryParams) => {
 
 const getData = async (query: QueryParams) => {
   // INIT DB QUERY ================================
-  const productsQuery = Product.find();
+  const productsQuery = Product.find().sort({ id: -1 });
   const customersQuery = Customer.find();
   const suppliersQuery = Supplier.find();
   const incomeExpensesQuery = Incomeexpense.find();
@@ -90,7 +87,7 @@ const getProducts = async (query: QueryParams) => {
         }
       : {};
 
-  const productsQuery = Product.find(findOptions);
+  const productsQuery = Product.find(findOptions).sort({ id: -1 });
 
   pagination(productsQuery, query);
 
@@ -151,24 +148,6 @@ const getCustomers = async (query: QueryParams) => {
     total,
   };
 };
-
-interface IProduct {
-  // id: string;
-  name: string;
-  suppliers: string;
-  stock: string;
-  price: string;
-  category: string;
-}
-
-interface ISupplier {
-  name: string;
-  address: string;
-  suppliers: string;
-  date: string;
-  amount: string;
-  status: string;
-}
 
 const createProduct = async (productData: IProduct) => {
   return Product.create({
