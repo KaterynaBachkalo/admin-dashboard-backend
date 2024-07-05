@@ -52,7 +52,7 @@ const login = async ({ email, password }: LoginParams) => {
   });
 
   const refreshToken = jwt.sign({ id: user.id }, serverConfig.jwtSecret, {
-    expiresIn: process.env.NODE_ENV === "production" ? "7d" : "2m",
+    expiresIn: process.env.NODE_ENV === "production" ? "7d" : "1d",
   });
 
   await User.findByIdAndUpdate(user.id, { accessToken, refreshToken });
