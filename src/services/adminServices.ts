@@ -23,10 +23,10 @@ const pagination = (dbQuery: any, query: QueryParams) => {
 
 const getData = async (query: QueryParams) => {
   // INIT DB QUERY ================================
-  const productsQuery = Product.find().sort({ id: -1 });
-  const customersQuery = Customer.find();
+  const productsQuery = Product.find();
+  const customersQuery = Customer.find().sort({ id: -1 });
   const suppliersQuery = Supplier.find();
-  const incomeExpensesQuery = Incomeexpense.find();
+  const incomeExpensesQuery = Incomeexpense.find().sort({ id: -1 });
 
   const products = await productsQuery;
 
@@ -63,7 +63,7 @@ const getOrders = async (query: QueryParams) => {
         }
       : {};
 
-  const ordersQuery = Order.find(findOptions);
+  const ordersQuery = Order.find(findOptions).sort({ id: -1 });
 
   pagination(ordersQuery, query);
 
@@ -111,7 +111,7 @@ const getSuppliers = async (query: QueryParams) => {
         }
       : {};
 
-  const suppliersQuery = Supplier.find(findOptions);
+  const suppliersQuery = Supplier.find(findOptions).sort({ id: -1 });
 
   pagination(suppliersQuery, query);
 
@@ -135,7 +135,7 @@ const getCustomers = async (query: QueryParams) => {
         }
       : {};
 
-  const customersQuery = Customer.find(findOptions);
+  const customersQuery = Customer.find(findOptions).sort({ id: -1 });
 
   pagination(customersQuery, query);
 
