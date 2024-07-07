@@ -53,6 +53,8 @@ const editProductSchema = Joi.object({
 });
 
 const addSupplierSchema = Joi.object({
+  id: Joi.number(),
+
   name: Joi.string()
     .required()
     .messages({ "any.required": "missing required name field" }),
@@ -80,6 +82,8 @@ const addSupplierSchema = Joi.object({
 
 const editSupplierSchema = Joi.object({
   _id: Joi.string().required(),
+
+  id: Joi.number(),
 
   name: Joi.string()
     .required()
