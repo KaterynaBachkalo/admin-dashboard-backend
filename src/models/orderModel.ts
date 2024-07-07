@@ -1,17 +1,10 @@
-import { model, Schema, Document } from "mongoose";
-
-interface IOrder extends Document {
-  photo: string;
-  name: string;
-  address: string;
-  products: string;
-  price: string;
-  status: string;
-  order_date: string;
-}
+import { model, Schema } from "mongoose";
+import { IOrder } from "../types";
 
 const orderSchema = new Schema<IOrder>(
   {
+    id: { type: Number },
+
     photo: {
       type: String,
     },

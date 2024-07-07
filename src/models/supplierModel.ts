@@ -1,18 +1,10 @@
-import { model, Schema, Document } from "mongoose";
-
-interface ISupplier extends Document {
-  name: string;
-  address: string;
-  suppliers: string;
-  date: string;
-  amount: string;
-  status: string;
-}
+import { model, Schema } from "mongoose";
+import { ISupplier } from "../types";
 
 const supplierSchema = new Schema<ISupplier>(
   {
     id: {
-      type: String,
+      type: Number,
     },
     name: {
       type: String,

@@ -1,17 +1,10 @@
 import { model, Schema, Document } from "mongoose";
-
-interface ICustomer extends Document {
-  photo: string;
-  name: string;
-  email: string;
-  spent: string;
-  phone: string;
-  address: string;
-  register_date: string;
-}
+import { ICustomer } from "../types";
 
 const customerSchema = new Schema<ICustomer>(
   {
+    id: { type: Number },
+
     photo: {
       type: String,
     },

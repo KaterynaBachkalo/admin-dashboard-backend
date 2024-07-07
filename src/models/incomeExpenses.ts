@@ -1,13 +1,10 @@
 import { model, Schema, Document } from "mongoose";
-
-interface IIncomeExpense extends Document {
-  name: string;
-  amount: string;
-  type: string;
-}
+import { IIncomeExpense } from "../types";
 
 const incomeExpensesSchema = new Schema<IIncomeExpense>(
   {
+    id: { type: Number },
+
     name: {
       type: String,
     },
