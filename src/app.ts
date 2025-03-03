@@ -11,8 +11,42 @@ const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://katerynabachkalo.github.io",
+];
+
+const corsOptions = {
+  origin: function (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void
+  ) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true); // Дозволяє запити з дозволених доменів
+    } else {
+      callback(new Error("Not allowed by CORS")); // Відмовляє, якщо домен не в списку
+    }
+  },
+  credentials: true, // Дозволяє передавати куки або авторизацію
+  optionsSuccessStatus: 200, // Для старих браузерів
+  allowedHeaders: [
+    "X-CSRF-Token",
+    "X-Requested-With",
+    "Accept",
+    "Accept-Version",
+    "Content-Length",
+    "Content-MD5",
+    "Content-Type",
+    "Date",
+    "X-Api-Version",
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 app.use(logger(formatsLogger));
-app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
