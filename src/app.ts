@@ -28,7 +28,7 @@ const corsOptions = {
     } else {
       callback(new Error("Not allowed by CORS"));
     }
-  }, // Домен, якому дозволено доступ
+  },
   optionsSuccessStatus: 200, // Для старих браузерів, які не підтримують статус 204 для preflight запитів
 };
 
