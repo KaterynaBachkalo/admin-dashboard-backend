@@ -13,7 +13,9 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 const allowedOrigins = [
   "http://localhost:3000",
+  "http://localhost:4000",
   "https://katerynabachkalo.github.io",
+  "https://admin-dashboard-backend-gules.vercel.app",
 ];
 
 const corsOptions = {
@@ -21,30 +23,16 @@ const corsOptions = {
     origin: string | undefined,
     callback: (err: Error | null, allow?: boolean) => void
   ) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true); // Дозволяє запити з дозволених доменів
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS")); // Відмовляє, якщо домен не в списку
+      callback(new Error("Not allowed by CORS"));
     }
-  },
-  credentials: true, // Дозволяє передавати куки або авторизацію
-  optionsSuccessStatus: 200, // Для старих браузерів
-  allowedHeaders: [
-    "X-CSRF-Token",
-    "X-Requested-With",
-    "Accept",
-    "Accept-Version",
-    "Content-Length",
-    "Content-MD5",
-    "Content-Type",
-    "Date",
-    "X-Api-Version",
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  }, // Домен, якому дозволено доступ
+  optionsSuccessStatus: 200, // Для старих браузерів, які не підтримують статус 204 для preflight запитів
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 
 app.use(logger(formatsLogger));
 app.use(express.json());
